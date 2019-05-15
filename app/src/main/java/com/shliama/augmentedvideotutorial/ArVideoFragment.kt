@@ -117,6 +117,17 @@ open class ArVideoFragment : ArFragment() {
 
         val updatedAugmentedImages = frame.getUpdatedTrackables(AugmentedImage::class.java)
         for (augmentedImage in updatedAugmentedImages) {
+
+            //pause-resume video
+            if (augmentedImage.trackingMethod == AugmentedImage.TrackingMethod.FULL_TRACKING) {
+                if (!mediaPlayer.isPlaying) {
+                    mediaPlayer.seekTo(mediaPlayer.currentPosition)
+                    mediaPlayer.start()
+                }
+            } else if (augmentedImage.trackingMethod == AugmentedImage.TrackingMethod.LAST_KNOWN_POSE)
+                mediaPlayer.pause()
+
+
             if (activeAugmentedImage != augmentedImage && augmentedImage.trackingState == TrackingState.TRACKING) {
                 try {
                     dismissArVideo()
